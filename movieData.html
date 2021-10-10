@@ -11,28 +11,34 @@
     <style>
         * {
             font-family: 'Poppins', sans-serif;
+            background-color: #131A27;
         }
 
         #main-head {
             margin: 20px 0 0 30px;
+            color: white;
         }
 
         input {
             display: block;
             margin: 2px 0 20px 0;
-            border: black 2px solid;
+            border: white 2px solid;
+            color: white;
+            border-radius: 5px;
         }
 
         #form-container {
             margin: 10px 0 20px 30px;
+            color: white;
         }
 
         input[type=submit] {
-            color: white;
-            background-color: black;
+            color: black;
+            background-color: white;
             height: 40px;
             width: 80px;
             cursor: pointer;
+            border-radius: 5px;
         }
 
         #movie-container {
@@ -40,26 +46,51 @@
             display: flex;
             flex-direction: row;
             width: 75%;
-            height: 350px;
+            min-height: 350px;
+            min-width: 600px;
             border: black 2px solid;
-            border-radius: 5px;
+            border-radius: 10px;
             padding: 2.5%;
+            color: white;
+            background-color: #030B17;
         }
 
         #poster-div {
             width: 25%;
+            background-color: #030B17;
         }
 
         #movie-info {
             width: 70%;
             padding: 2.5%;
+            background-color: #030B17;
+            display: flex;
+            flex-direction: column;
+        }
+        #movie-info *{
+            background-color: #030B17;
+            margin: 10px 10px;
+        }
+
+        #error-div{
+            margin: auto;
+            width: 400px;
+        }
+
+        #gif{
+            width: 100%;
+        }
+
+        #error-message{
+            text-align: center;
+            color: white;
         }
     </style>
-    <title>Document</title>
+    <title>Movies</title>
 </head>
 
 <body>
-    <h1 id="main-head">Search Movie</h1>
+    <h1 id="main-head">What are you watching today?</h1>
 
     <div id="form-container">
 
@@ -92,7 +123,7 @@
             const response = await fetchPost(name);
 
             if (response.Response === "False") {
-                alert("No results found.")
+                showError();
             }
             else {
                 createPost(response);
@@ -118,6 +149,8 @@
         const plot = response.Plot;
         const poster = response.Poster;
         const rating = response.imdbRating;
+        const director = response.Director;
+        const rated = response.Rated;
 
         const moviePoster = document.createElement("div");
         moviePoster.setAttribute("id", "poster-div");
@@ -135,13 +168,19 @@
         const plotText = document.createElement("p");
         plotText.innerText = `Plot: ${plot}`;
 
+        const directorText = document.createElement("p");
+        directorText.innerText = `Director: ${director}`;
+
         const ratingText = document.createElement("p");
         ratingText.innerText = `IMDb Rating: ${rating}`;
+
+        const ratedText = document.createElement("p");
+        ratedText.innerText = `Rated: ${rated}`;
 
         container.append(movieContainer);
         movieContainer.append(moviePoster);
         movieContainer.append(movieInfo);
-        movieInfo.append(titleHead, genreText, plotText, ratingText);
+        movieInfo.append(titleHead, genreText, plotText, directorText, ratingText, ratedText);
 
     }
 
@@ -153,6 +192,23 @@
             .catch(function (err) {
 
             })
+    }
+
+    function showError(){
+        const container = document.getElementById("body-container");
+        container.innerHTML = "";
+
+        const errorDiv = document.createElement("div");
+        errorDiv.setAttribute("id", "error-div");
+
+        errorDiv.innerHTML = `<iframe id="gif" src="https://giphy.com/embed/14uQ3cOFteDaU" width="480" height="360" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/404-14uQ3cOFteDaU">via GIPHY</a></p>`;
+
+        const errorMessage = document.createElement("p");
+        errorMessage.textContent = `Nothing found. Try searching for something else!`;
+        errorMessage.setAttribute("id", "error-message");
+        
+        container.append(errorMessage, errorDiv);
+
     }
 
 </script>
