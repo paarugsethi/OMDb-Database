@@ -58,6 +58,7 @@
         #poster-div {
             width: 25%;
             background-color: #030B17;
+            align-content: center;
         }
 
         #movie-info {
@@ -85,6 +86,20 @@
             text-align: center;
             color: white;
         }
+
+        #rec-div{
+            background-color: white;
+            margin-top: 6px;
+            border-radius: 4px;
+            width: 130px;
+        }
+
+        #rec-text{
+            background-color: white;
+            font-size: 14px;
+            color: #030B17;
+        }
+
     </style>
     <title>Movies</title>
 </head>
@@ -177,10 +192,24 @@
         const ratedText = document.createElement("p");
         ratedText.innerText = `Rated: ${rated}`;
 
+        const recDiv = document.createElement("div");
+        recDiv.setAttribute("id", "rec-div");
+        const recText = document.createElement("p");
+        recText.textContent = `Recommended`;
+        recText.setAttribute("id", "rec-text");
+
         container.append(movieContainer);
         movieContainer.append(moviePoster);
         movieContainer.append(movieInfo);
-        movieInfo.append(titleHead, genreText, plotText, directorText, ratingText, ratedText);
+
+        recDiv.append(recText);
+
+        if (rating > 8.5){
+            movieInfo.append(titleHead, recDiv, genreText, plotText, directorText, ratingText, ratedText);
+        }
+        else{
+            movieInfo.append(titleHead, genreText, plotText, directorText, ratingText, ratedText);
+        }
 
     }
 
